@@ -18,21 +18,30 @@ import {
   Planet,
 } from "../generated/graphql";
 import { useEffect, useState } from "react";
+import { Carousel, Container, ListGroup } from "react-bootstrap";
 
-const getAllProducersWorkCount = (films: Film[]): {} | Object => {
-  const producerCounts = films?.reduce((acc, film) => {
-    film.producers?.forEach((producer) => {
+const getAllProducersWorkCount = (
+  films: Film[] | undefined | null
+): Record<string, number> => {
+  let producerCounts: any = {};
+
+  films?.map((film: Film) => {
+    film?.producers?.forEach((producer) => {
       if (producer) {
-        acc[producer] = (acc[producer] || 0) + 1;
+        
+        producerCounts[producer] = !producerCounts[producer]
+        ? 1
+        : producerCounts[producer] + 1;
+
       }
     });
-    return acc;
-  }, {});
-  return producerCounts || {};
+  });
+  console.log(producerCounts);
+  return producerCounts;
 };
 const getCountOfPlanetsNoWater = (planets: Planet[]) => {
   let count = 0;
-  planets?.forEach((planet) => {
+  planets?.forEach((planet: Planet) => {
     if (!planet?.surfaceWater) {
       count += 1;
     }
@@ -48,35 +57,85 @@ const PersonPage = () => {
   });
   const { data, error, fetching } = result;
   const [producers, setProducers] = useState({});
+  const [currentFilmIndex, setCurrentFilmIndex] = useState(0);
+
+  const handleFilmSelect = (selectedIndex: number) =>
+    setCurrentFilmIndex(() => selectedIndex);
 
   useEffect(() => {
-    setProducers(getAllProducersWorkCount(data?.person?.filmConnection?.films));
-  }, []);
+    const validFilms = data?.person?.filmConnection?.films;
+    setProducers(()=>getAllProducersWorkCount(validFilms));
+  }, [data]);
 
-  if (error) return <>Error</>;
-  if (fetching) return <>Loading...</>;
+  if (error) return <Container>Error</Container>;
+  if (fetching) return <Container>Loading...</Container>;
 
   return (
-    <div>
+    <Container style={{ width: "50vw", textAlign: "center" }}>
       {!data?.person ? (
         ""
       ) : (
         <>
-          <h1>{`${data?.person.name}`}</h1>
-          <div>{`Birth year ${data?.person.birthYear}`}</div>
-          <div>{`Average height ${data?.person.species?.averageHeight}`}</div>
-          <div>{`Producers ${producers}`}</div>
-          <div>
-            {data?.person?.filmConnection?.films[0]?.title}
-            {data?.person?.filmConnection?.films[0]?.releaseDate}
-            Planets no water{" "}
-            {getCountOfPlanetsNoWater(
-              data?.person?.filmConnection?.films[1]?.planetConnection?.planets
-            )}
-          </div>
+          <h2 className="bg-body-primary" style={{ textAlign: "center" }}>
+            {data?.person.name}
+          </h2>
+          <br />
+          <div>{`Birth year: ${data?.person.birthYear}`}</div>
+          <div>{`Average height: ${
+            data?.person.species?.averageHeight || 0
+          }`}</div>
+
+          <br />
+          <h5>List of producers:</h5>
+          <ListGroup
+            style={{
+              width: "20rem",
+              margin: "0 auto",
+            }}
+            variant="flush"
+          >
+            {Object.entries(producers).map(([producerName, collaborationsCount]) => (
+              <ListGroup.Item>{`${producerName} - ${collaborationsCount} collaborations`}</ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <br />
+          <h4>Films: </h4>
+          <Carousel
+            interval={null}
+            activeIndex={currentFilmIndex}
+            onSelect={handleFilmSelect}
+          >
+            {data?.person?.filmConnection?.films?.map((film, index) => (
+              <Carousel.Item
+                key={index}
+                className="bg-dark text-light"
+                style={{
+                  height: "20rem",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
+                <Container
+                  style={{
+                    height: "20rem",
+                    marginTop: "7rem",
+                  }}
+                >
+                  <h5>{film?.title}</h5>
+                  <p>{film?.releaseDate}</p>
+                  <p>
+                    Number of planets without water:{" "}
+                    {getCountOfPlanetsNoWater(film?.planetConnection?.planets)}
+                  </p>
+                </Container>
+              </Carousel.Item>
+            ))}
+          </Carousel>
         </>
       )}
-    </div>
+    </Container>
   );
 };
 
