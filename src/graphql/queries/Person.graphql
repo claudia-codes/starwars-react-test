@@ -1,0 +1,21 @@
+query Person($id: ID) {
+  person(id: $id) {
+    name
+    birthYear
+    species {
+      averageHeight
+    }
+    filmConnection {
+      films {
+        producers
+        title
+        releaseDate
+        planetConnection {
+          planets {
+            surfaceWater
+          }
+        }
+      }
+    }
+  }
+}

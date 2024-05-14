@@ -11,15 +11,18 @@
     "download-schema": "get-graphql-schema https://swapi-graphql.netlify.app/.netlify/functions/index > schema.graphql"
   },
   "dependencies": {
-    "graphql": "16.6.0",
+    "@urql/core": "^5.0.3",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "urql": "^3.0.3"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.13.7",
-    "@graphql-codegen/typescript-operations": "^2.5.4",
+    "@graphql-codegen/cli": "^2.16.5",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-operations": "^2.5.13",
+    "@graphql-codegen/typescript-urql": "^4.0.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",

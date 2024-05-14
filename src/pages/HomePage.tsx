@@ -1,36 +1,20 @@
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { gql, useQuery } from "urql";
-
-const query = gql`
-  query Home {
-    allPeople {
-      edges {
-        node {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
 /* 
   This page should list all the people from the Star Wars API. Each person should
   be linked to its own page.
-
 */
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "urql";
+import { HomeQuery, HomeDocument } from "../generated/graphql";
 
 const HomePage = () => {
-  const [result] = useQuery({ query });
-  const {data, error, fetching} = result;
+  const [result] = useQuery<HomeQuery>({ query: HomeDocument });
+  const { data, error, fetching } = result;
   const navigate = useNavigate();
 
   if (error) return <>Error</>;
   if (fetching) return <>Loading...</>;
 
-  console.log(result?.data.allPeople.edges);
-  const handleClick = (personId: string) => navigate(`person/${personId }`);
+  const handleClick = (personId: string) => navigate(`person/${personId}`);
 
   return (
     <div>
