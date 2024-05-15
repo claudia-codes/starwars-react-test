@@ -1,6 +1,12 @@
 import { useQuery } from "urql";
 import { HomeQuery, HomeDocument } from "../generated/graphql";
-import { Container, Grid, Skeleton } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Skeleton,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import PersonListItem from "../components/PersonListItem";
 import Navbar from "../components/Navbar";
 import { redirect } from "react-router-dom";
@@ -15,7 +21,7 @@ const HomePage = () => {
 
   if (fetching) {
     return (
-      <Container maxWidth="lg" style={{ marginTop: 100 }}>
+      <Container maxWidth="lg" style={{ marginTop: 80 }}>
         <Grid container spacing={2}>
           {[...Array(numberOfItems)].map((_, index) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -26,18 +32,15 @@ const HomePage = () => {
       </Container>
     );
   }
-
   return (
-    <>
+    <Container maxWidth="lg" style={{ marginTop: 80 }}>
       <Navbar title="People" />
-      <Container maxWidth="lg" style={{ marginTop: 100 }}>
-        <Grid container spacing={2}>
-          {data?.allPeople?.edges?.map((edge, index) => (
-            <PersonListItem key={index} edge={edge}></PersonListItem>
-          ))}
-        </Grid>
-      </Container>
-    </>
+      <Grid container spacing={2}>
+        {data?.allPeople?.edges?.map((edge, index) => (
+          <PersonListItem key={index} edge={edge}></PersonListItem>
+        ))}
+      </Grid>
+    </Container>
   );
 };
 

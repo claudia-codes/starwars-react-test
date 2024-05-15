@@ -34,7 +34,7 @@ const PersonPage = () => {
   if (error) return redirect(`/error`);
   if (fetching) {
     return (
-      <Container style={{ marginTop: 100 }}>
+      <Container style={{ marginTop: 80 }}>
         {/* Need to improve this and add for every piece of data */}
         <Skeleton variant="rectangular" height={500} />
       </Container>
@@ -45,7 +45,7 @@ const PersonPage = () => {
     <>
       <>
         <Navbar title={data?.person?.name} />
-        <Container maxWidth="lg" style={{ marginTop: 100 }}>
+        <Container maxWidth="lg" style={{ marginTop: 80 }}>
           <Paper sx={{ p: 2 }}>
             <Stack
               direction="row"

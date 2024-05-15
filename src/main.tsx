@@ -7,36 +7,40 @@ import PersonPage from "./pages/PersonPage";
 import HomePage from "./pages/HomePage";
 import ErrorPage from "./pages/ErrorPage";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { withTheme } from "@emotion/react";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme, CssBaseline } from "@mui/material";
 const client = createClient({
   url: "https://swapi-graphql.netlify.app/.netlify/functions/index",
 });
 
-const HomePageWithTheme = withTheme(HomePage)
-const PersonPageWithTheme = withTheme(PersonPage)
-const ErrorPageWithTheme = withTheme(ErrorPage)
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePageWithTheme />,
+    element: <HomePage />,
   },
   {
     path: "/person/:personId",
-    element: <PersonPageWithTheme />,
+    element: <PersonPage />,
   },
   {
     path: "/error",
-    element: <ErrorPageWithTheme />
-  }
+    element: <ErrorPage />,
+  },
 ]);
 
-
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Provider value={client}>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Provider value={client}>
         <RouterProvider router={router} />
-    </Provider>
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>
 );

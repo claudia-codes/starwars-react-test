@@ -14,10 +14,10 @@ const Navbar = ({ title }: Props) => {
   const handleBackButtonClick = () => {
     navigate(-1);
   };
-  
+
   return (
     <AppBar position="fixed">
-      <Toolbar variant="dense">
+      <Toolbar>
         <IconButton
           style={{ position: "absolute" }}
           hidden={!canGoBack}
