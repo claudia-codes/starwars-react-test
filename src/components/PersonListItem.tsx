@@ -25,11 +25,11 @@ const PersonListItem = ({ edge }: Props) => {
     navigate(`person/${personId}`);
 
   return (
-    <Grid item xs={2}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <Item
         key={edge?.node?.id}
         onClick={() => handleClick(edge?.node?.id)}
-        sx={{ "&:hover": { boxShadow: 6 }, cursor: "pointer" }}
+        sx={{ "&:hover": { boxShadow: 6 }, cursor: "pointer", height: 210 }}
         elevation={1}
       >
         {edge?.node?.name}

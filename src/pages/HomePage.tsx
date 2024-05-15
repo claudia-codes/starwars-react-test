@@ -1,27 +1,39 @@
-/* 
-  This page should list all the people from the Star Wars API. Each person should
-  be linked to its own page.
-*/
 import { useQuery } from "urql";
 import { HomeQuery, HomeDocument } from "../generated/graphql";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Skeleton } from "@mui/material";
 import PersonListItem from "../components/PersonListItem";
 import Navbar from "../components/Navbar";
+import { redirect } from "react-router-dom";
 
 const HomePage = () => {
   const [result] = useQuery<HomeQuery>({ query: HomeDocument });
   const { data, error, fetching } = result;
 
-  if (error) return <Container>Error</Container>;
-  if (fetching) return <Container>Loading...</Container>;
+  if (error) return redirect("/error");
+
+  const numberOfItems = data?.allPeople?.edges?.length || 8; // Default to 8 if undefined
+
+  if (fetching) {
+    return (
+      <Container maxWidth="lg" style={{ marginTop: 100 }}>
+        <Grid container spacing={2}>
+          {[...Array(numberOfItems)].map((_, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Skeleton variant="rectangular" height={210} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    );
+  }
 
   return (
     <>
       <Navbar title="People" />
       <Container maxWidth="lg" style={{ marginTop: 100 }}>
         <Grid container spacing={2}>
-          {data?.allPeople?.edges?.map((edge) => (
-            <PersonListItem edge={edge}></PersonListItem>
+          {data?.allPeople?.edges?.map((edge, index) => (
+            <PersonListItem key={index} edge={edge}></PersonListItem>
           ))}
         </Grid>
       </Container>

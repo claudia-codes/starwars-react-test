@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import { MobileStepper, Typography, Button, Divider, Box } from "@mui/material";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import  KeyboardArrowRight  from "@mui/icons-material/KeyboardArrowRight";
+import  KeyboardArrowLeft  from "@mui/icons-material/KeyboardArrowLeft";
 import { getCountOfPlanetsNoWater } from "../utils/planets";
 
 const TextMobileStepper = ({ steps }) => {

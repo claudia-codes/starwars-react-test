@@ -5,6 +5,7 @@ import { createClient } from "urql";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import PersonPage from "./pages/PersonPage";
 import HomePage from "./pages/HomePage";
+import ErrorPage from "./pages/ErrorPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withTheme } from "@emotion/react";
 const client = createClient({
@@ -13,6 +14,7 @@ const client = createClient({
 
 const HomePageWithTheme = withTheme(HomePage)
 const PersonPageWithTheme = withTheme(PersonPage)
+const ErrorPageWithTheme = withTheme(ErrorPage)
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
     path: "/person/:personId",
     element: <PersonPageWithTheme />,
   },
+  {
+    path: "/error",
+    element: <ErrorPageWithTheme />
+  }
 ]);
 
 
